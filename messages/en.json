@@ -181,8 +181,11 @@
     "thisMessageWasNotSavedPleaseTryTheChatAgain": "This message was not saved. Please try the chat again.",
     "Greeting": {
       "goodMorning": "Good morning, {name}",
+      "haveANiceDay": "Hey {name}, have a nice day.",
       "goodAfternoon": "Good afternoon, {name}",
-      "goodEvening": "Good evening, {name}",
+      "goodEvening": "How are you today, {name}? I'll be a company a relaxing evening with you now.",
+      "goodNight": "Good night, {name}",
+      "haveANiceDream": "Good night and have a nice dream, {name}",
       "niceToSeeYouAgain": "Nice to see you again, {name}",
       "whatAreYouWorkingOnToday": "What are you working on today? {name}",
       "letMeKnowWhenYoureReadyToBegin": "Let me know when you're ready to begin.",

@@ -55,33 +55,8 @@ export const BASE_THEMES = [
 
 export const OAUTH_REQUIRED_CODE = "OAUTH_REQUIRED";
 
-export const SUPPORTED_LOCALES = [
-  {
-    code: "en",
-    name: "English 🇺🇸",
-  },
-  {
-    code: "ko",
-    name: "Korean 🇰🇷",
-  },
-
-  {
-    code: "es",
-    name: "Spanish 🇪🇸",
-  },
-  {
-    code: "fr",
-    name: "French 🇫🇷",
-  },
-  {
-    code: "ja",
-    name: "Japanese 🇯🇵",
-  },
-  {
-    code: "zh",
-    name: "Chinese 🇨🇳",
-  },
-];
+// SUPPORTED_LOCALES moved to self file part
+export { SUPPORTED_LOCALES } from "./supported-locales";
 
 export const BACKGROUND_COLORS = [
   "oklch(87% 0 0)",

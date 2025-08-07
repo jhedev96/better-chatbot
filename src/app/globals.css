@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tailwind-rounded-out";
 @import "tw-animate-css";
 /* Individual theme variants - themes from  https://github.com/rawestmoreland/theme-generator/blob/main/src/app/globals.css */
 

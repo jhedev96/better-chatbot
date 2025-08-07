@@ -15,52 +15,86 @@ import { Separator } from "ui/separator";
 import { useEffect, useMemo } from "react";
 import { ThreadDropdown } from "../thread-dropdown";
 import { appStore } from "@/app/store";
+// PERUBAHAN: Impor usePathname untuk membaca URL
 import { usePathname } from "next/navigation";
 import { useShallow } from "zustand/shallow";
 import { getShortcutKeyList, Shortcuts } from "lib/keyboard-shortcuts";
 import { useTranslations } from "next-intl";
 import { TextShimmer } from "ui/text-shimmer";
+import { Mascot } from "ui/mascot";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function AppHeader() {
   const t = useTranslations();
-  const [appStoreMutate] = appStore(useShallow((state) => [state.mutate]));
+  // PERUBAHAN: Kita tidak lagi mengambil currentThreadId di sini
+  const [appStoreMutate] = appStore(
+    useShallow((state) => [state.mutate]),
+  );
   const { toggleSidebar } = useSidebar();
-  const currentPaths = usePathname();
+  
+  // PERUBAHAN: Dapatkan path URL saat ini
+  const pathname = usePathname();
 
   const componentByPage = useMemo(() => {
-    if (currentPaths.startsWith("/chat/")) {
+    // Logika ini tetap sama, tetapi sekarang kita menggunakan `pathname` yang sudah ada
+    if (pathname.startsWith("/chat/")) {
       return <ThreadDropdownComponent />;
     }
-  }, [currentPaths]);
+  }, [pathname]);
+
+  // PERUBAHAN: Tentukan apakah thread aktif berdasarkan URL, bukan state global.
+  // Ini adalah sumber kebenaran yang paling andal.
+  const isThreadActive = pathname.startsWith("/chat/");
 
   return (
-    <header className="sticky top-0 z-50 flex items-center px-3 py-2">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Toggle aria-label="Toggle italic" onClick={toggleSidebar}>
-            <PanelLeft />
-          </Toggle>
-        </TooltipTrigger>
-        <TooltipContent align="start" side="bottom">
-          <div className="flex items-center gap-2">
-            {t("KeyboardShortcuts.toggleSidebar")}
-            <div className="text-xs text-muted-foreground flex items-center gap-1">
-              {getShortcutKeyList(Shortcuts.toggleSidebar).map((key) => (
-                <span
-                  key={key}
-                  className="w-5 h-5 flex items-center justify-center bg-muted rounded "
-                >
-                  {key}
-                </span>
-              ))}
+    <header className="sticky top-0 z-50 flex items-center justify-between px-3 py-2 relative">
+      {/* KELOMPOK KIRI */}
+      <div className="flex items-center gap-1">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Toggle aria-label="Toggle italic" onClick={toggleSidebar}>
+              <PanelLeft />
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent align="start" side="bottom">
+            <div className="flex items-center gap-2">
+              {t("KeyboardShortcuts.toggleSidebar")}
+              <div className="text-xs text-muted-foreground flex items-center gap-1">
+                {getShortcutKeyList(Shortcuts.toggleSidebar).map((key) => (
+                  <span
+                    key={key}
+                    className="w-5 h-5 flex items-center justify-center bg-muted rounded "
+                  >
+                    {key}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        </TooltipContent>
-      </Tooltip>
+          </TooltipContent>
+        </Tooltip>
+        {componentByPage}
+      </div>
 
-      {componentByPage}
-      <div className="flex-1" />
+      {/* MASKOT DI TENGAH (Logika tidak berubah, tapi pemicunya sekarang lebih andal) */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+        <AnimatePresence>
+          {isThreadActive && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0, opacity: 0, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <Mascot
+                srcFiles="/mascot/Robot-head.json"
+                className="w-12 h-12"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
+      {/* KELOMPOK KANAN */}
       <div className="flex items-center gap-2">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -198,3 +232,4 @@ function ThreadDropdownComponent() {
     </div>
   );
 }
+

@@ -205,6 +205,8 @@ export default function ChatBot({ threadId, initialMessages, slots }: Props) {
     () => messages.length === 0 && !error,
     [messages.length, error],
   );
+  
+  const hasThread = useMemo(() => messages.length > 0, [messages.length]);
 
   const isInitialThreadEntry = useMemo(
     () =>
@@ -432,17 +434,19 @@ export default function ChatBot({ threadId, initialMessages, slots }: Props) {
 
         <div
           className={clsx(
-            messages.length && "absolute bottom-14",
+            //messages.length && "absolute bottom-14",
             "w-full z-10",
+            // CHANGE: Apply absolute positioning and move to bottom if there's a thread
+            hasThread ? "absolute bottom-0" : "relative",
           )}
         >
-          <div className="max-w-3xl mx-auto relative flex justify-center items-center -top-2">
-            <ScrollToBottomButton
-              show={!isAtBottom && messages.length > 0}
-              onClick={scrollToBottom}
-              className=""
-            />
-          </div>
+        <div className="max-w-3xl mx-auto relative flex justify-center items-center -top-2">
+          <ScrollToBottomButton
+            show={!isAtBottom && messages.length > 0}
+            onClick={scrollToBottom}
+            className=""
+          />
+        </div>
 
           <PromptInput
             input={input}
@@ -454,6 +458,9 @@ export default function ChatBot({ threadId, initialMessages, slots }: Props) {
             isLoading={isLoading || isPendingToolCall}
             onStop={stop}
             onFocus={isFirstTime ? undefined : handleFocus}
+            // CHANGE: Pass the thread state to the input component
+            isThreadActive={hasThread}
+            scrollableContainerRef={containerRef}
           />
           {slots?.inputBottomSlot}
         </div>

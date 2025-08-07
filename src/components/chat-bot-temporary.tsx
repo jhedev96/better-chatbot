@@ -283,6 +283,8 @@ function DrawerTemporaryContent({
       });
     }
   }, [Boolean(temporaryChat.chatModel)]);
+  
+  const hasThread = useMemo(() => messages.length > 0, [messages.length]);
 
   return (
     <div
@@ -327,7 +329,10 @@ function DrawerTemporaryContent({
         {error && <ErrorMessage error={error} />}
       </div>
 
-      <div className={"w-full my-6 mt-auto"}>
+      <div className={cn(
+            "w-full z-10 mt-auto",
+            hasThread ? "sticky bottom-0 bg-background/80 backdrop-blur-sm" : "relative",
+          )}>
         <PromptInput
           input={input}
           append={append}
@@ -347,6 +352,7 @@ function DrawerTemporaryContent({
           voiceDisabled
           isLoading={isLoading}
           onStop={stop}
+          isThreadActive={hasThread}
         />
       </div>
     </div>
