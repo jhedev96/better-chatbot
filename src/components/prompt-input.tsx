@@ -358,7 +358,7 @@ export default function PromptInput({
       `}</style>
       <PromptContainer 
         isThreadActive={isThreadActive}
-        promptPeekActive="false"
+        promptPeekActive={false}
         scrollableContainerRef={scrollableContainerRef} // MODIFICATION: Teruskan ref ke container
       >
       <div className="max-w-3xl mx-auto fade-in animate-in">
