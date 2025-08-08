@@ -1,4 +1,5 @@
-// models.ts
+import "server-only";
+
 import { createOllama } from "ollama-ai-provider";
 import { openai } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
@@ -49,6 +50,13 @@ const staticModels = {
     "qwen3-8b:free": openrouter("qwen/qwen3-8b:free"),
     "qwen3-14b:free": openrouter("qwen/qwen3-14b:free"),
     "qwen3-coder": openrouter("qwen/qwen3-coder"),
+
+    "qwen3-coder:free": openrouter("qwen/qwen3-coder:free"),
+    "qwen3-30b-a3b:free": openrouter("qwen/qwen3-30b-a3b:free"),
+    "qwen3-235b-a22b:free": openrouter("qwen/qwen3-235b-a22b:free"),
+    "gpt-oss-20b:free": openrouter("openai/gpt-oss-20b:free"),
+    "kimi-k2:free": openrouter("moonshotai/kimi-k2:free"),
+    "deepseek-chat-v3-0324:free": openrouter("deepseek/deepseek-chat-v3-0324:free"),
   },
 };
 
@@ -60,6 +68,10 @@ const staticUnsupportedModels = new Set([
   staticModels.ollama["gemma3:12b"],
   staticModels.openRouter["qwen3-8b:free"],
   staticModels.openRouter["qwen3-14b:free"],
+
+  staticModels.openRouter["qwen3-30b-a3b:free"],
+  staticModels.openRouter["qwen3-coder:free"],
+  staticModels.openRouter["gpt-oss-20b:free"],
 ]);
 
 const openaiCompatibleProviders = openaiCompatibleModelsSafeParse(
